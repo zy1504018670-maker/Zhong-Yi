@@ -1,0 +1,13 @@
+Task,Priority,Estimate(hours)
+Project setup,H,0.5
+Process scanner,H,1
+Game detection,H,2
+CSV logging,M,1
+Chart display,H,1.5
+Shutdown function,L,0.5
+CLI menu,M,1
+Unit tests,M,1.5
+SRS document,H,1
+UML diagrams,M,0.5
+REST API,H,2
+Docker integration,L,0.5

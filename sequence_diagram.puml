@@ -1,0 +1,10 @@
+@startuml
+title Game Start Detection
+loop every 5s
+    GameMonitor -> ProcessScanner: get_running_processes()
+    alt game found
+        GameMonitor -> GameMonitor: record start_time
+        GameMonitor -> DataLogger: log_session()
+    end
+end
+@enduml

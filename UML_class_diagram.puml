@@ -1,0 +1,25 @@
+@startuml
+class GameMonitor {
+    - current_game
+    - start_time
+    - daily_limit
+    + start_monitoring()
+    + set_daily_limit()
+    + show_daily_chart()
+}
+class ProcessScanner {
+    + get_running_processes()
+    + is_game()
+}
+class DataLogger {
+    + log_session()
+    + load_today_sessions()
+}
+class RESTAPI {
+    + get_games()
+    + add_game()
+}
+GameMonitor --> ProcessScanner
+GameMonitor --> DataLogger
+RESTAPI --> GameMonitor
+@enduml
