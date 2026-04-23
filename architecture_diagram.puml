@@ -1,0 +1,36 @@
+@startuml
+title Child Play Time Monitor - Architecture Diagram
+
+actor Parent
+node "PC / Docker Container" {
+  component "FastAPI REST API" as API
+  component "GameMonitor" as Monitor
+  component "ProcessScanner" as Scanner
+  component "TaskManager" as Tasks
+  component "SettingsStore" as Settings
+  component "DataLogger" as Logger
+  component "NetworkMonitor" as Network
+  database "tasks.json" as TasksFile
+  database "settings.json" as SettingsFile
+  database "playtime.csv" as CsvFile
+}
+
+cloud "Operating System" as OS
+collections "Running Processes" as Processes
+collections "Network Counters" as Counters
+
+Parent --> API : HTTP requests
+API --> Monitor
+Monitor --> Scanner
+Monitor --> Tasks
+Monitor --> Settings
+Monitor --> Logger
+Monitor --> Network
+Scanner --> Processes
+Network --> Counters
+Tasks --> TasksFile
+Settings --> SettingsFile
+Logger --> CsvFile
+Processes --> OS
+Counters --> OS
+@enduml

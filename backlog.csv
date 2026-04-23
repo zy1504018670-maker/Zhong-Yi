@@ -1,13 +1,21 @@
-Task,Priority,Estimate(hours)
-Project setup,H,0.5
-Process scanner,H,1
-Game detection,H,2
-CSV logging,M,1
-Chart display,H,1.5
-Shutdown function,L,0.5
-CLI menu,M,1
-Unit tests,M,1.5
-SRS document,H,1
-UML diagrams,M,0.5
-REST API,H,2
-Docker integration,L,0.5
+Task,Priority,Estimate(hours),Status
+Project setup,H,0.5,Done
+Process scanning,H,1,Done
+Game start and end detection,H,1.5,Done
+Session duration calculation,H,0.5,Done
+CSV session logging,H,1,Done
+Task list persistence,H,1.5,Done
+Task completion rules,H,1,Done
+Network traffic tracking,M,1.5,Done
+REST API for games,H,1,Done
+REST API for tasks,H,1,Done
+REST API for limits and status,H,1,Done
+Swagger documentation,M,0.5,Done
+Docker integration,M,0.5,Done
+SRS document,H,1,Done
+Use case diagram,M,0.5,Done
+Architecture diagram,M,0.5,Done
+Class diagram,M,0.5,Done
+Sequence diagrams,H,1,Done
+Unit tests,H,1.5,Done
+README and structure description,H,1,Done

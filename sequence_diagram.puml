@@ -1,10 +1,73 @@
 @startuml
-title Game Start Detection
-loop every 5s
-    GameMonitor -> ProcessScanner: get_running_processes()
-    alt game found
-        GameMonitor -> GameMonitor: record start_time
-        GameMonitor -> DataLogger: log_session()
-    end
+title Use Case 1 - Parent creates and completes a task
+
+actor Parent
+participant "FastAPI" as API
+participant "GameMonitor" as Monitor
+participant "TaskManager" as Tasks
+
+Parent -> API: POST /tasks
+API -> Monitor: add_task(title, description)
+Monitor -> Tasks: add_task(title, description)
+Tasks --> Monitor: created task
+Monitor --> API: task
+API --> Parent: 201 Created
+
+Parent -> API: PATCH /tasks/{id}
+API -> Monitor: update_task(id, completed=True)
+Monitor -> Tasks: update_task(id, completed=True)
+Tasks --> Monitor: updated task
+Monitor --> API: updated task
+API --> Parent: 200 OK
+
+newpage
+title Use Case 2 - Game session detection and logging
+
+participant "GameMonitor" as Monitor2
+participant "ProcessScanner" as Scanner
+participant "NetworkMonitor" as Net
+participant "DataLogger" as Logger
+
+loop every 5 seconds
+  Monitor2 -> Scanner: get_running_processes()
+  Scanner --> Monitor2: process names
+  Monitor2 -> Scanner: find_active_game(processes, game list)
+  Scanner --> Monitor2: active game or None
+  alt target game detected
+    Monitor2 -> Net: get_total_bytes()
+    Net --> Monitor2: session start bytes
+    Monitor2 -> Monitor2: store start time
+  else target game closed
+    Monitor2 -> Net: get_total_bytes()
+    Net --> Monitor2: current bytes
+    Monitor2 -> Logger: log_session(start, end, game, network, reason, flags)
+    Logger --> Monitor2: stored
+  end
+end
+
+newpage
+title Use Case 3 - Daily limit rule is triggered
+
+participant "GameMonitor" as Monitor3
+participant "TaskManager" as Tasks3
+participant "DataLogger" as Logger3
+participant "SettingsStore" as Settings
+
+Monitor3 -> Settings: load()
+Settings --> Monitor3: daily_limit_minutes
+Monitor3 -> Logger3: get_total_today()
+Logger3 --> Monitor3: total logged minutes
+Monitor3 -> Tasks3: get_pending_tasks()
+Tasks3 --> Monitor3: pending tasks
+Monitor3 -> Monitor3: calculate current session minutes
+
+alt daily limit exceeded
+  Monitor3 -> Monitor3: add rule flag daily_limit_exceeded
+  Monitor3 -> Monitor3: print warning
+  alt auto shutdown enabled
+    Monitor3 -> Monitor3: schedule OS shutdown timer
+  end
+else limits are normal
+  Monitor3 -> Monitor3: continue monitoring
 end
 @enduml

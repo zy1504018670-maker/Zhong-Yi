@@ -1,25 +1,73 @@
 @startuml
+title Child Play Time Monitor - UML Class Diagram
+
 class GameMonitor {
-    - current_game
-    - start_time
-    - daily_limit
-    + start_monitoring()
-    + set_daily_limit()
-    + show_daily_chart()
+  - current_game: str
+  - start_time: datetime
+  - session_start_network_bytes: int
+  - session_rule_flags: set
+  - daily_limit: int
+  - network_limit_mb: float
+  - auto_shutdown_enabled: bool
+  + start_monitoring()
+  + stop_monitoring()
+  + add_game(game_name)
+  + remove_game(game_name)
+  + add_task(title, description)
+  + update_task(task_id, title, description, completed)
+  + get_status()
+  + get_today_stats()
 }
+
 class ProcessScanner {
-    + get_running_processes()
-    + is_game()
+  + get_running_processes()
+  + is_game(proc_name, game_process_names)
+  + find_active_game(proc_names, game_process_names)
 }
+
 class DataLogger {
-    + log_session()
-    + load_today_sessions()
+  + init_csv()
+  + log_session(start, end, game_name, network_mb, end_reason, rule_flags)
+  + load_today_sessions()
+  + get_total_today()
+  + get_recent_sessions(limit)
 }
-class RESTAPI {
-    + get_games()
-    + add_game()
+
+class TaskManager {
+  + list_tasks()
+  + get_pending_tasks()
+  + add_task(title, description)
+  + update_task(task_id, title, description, completed)
+  + remove_task(task_id)
+  + summary()
 }
+
+class SettingsStore {
+  + load()
+  + save(data)
+  + add_game(game_name)
+  + remove_game(game_name)
+  + update_limits(daily_limit_minutes, network_limit_mb, auto_shutdown_enabled)
+}
+
+class NetworkMonitor {
+  + get_total_bytes()
+  + bytes_to_megabytes(byte_count)
+}
+
+class FastAPIApp {
+  + GET /status
+  + GET /games
+  + POST /games
+  + GET /tasks
+  + PUT /limits
+  + GET /stats/today
+}
+
+FastAPIApp --> GameMonitor
 GameMonitor --> ProcessScanner
 GameMonitor --> DataLogger
-RESTAPI --> GameMonitor
+GameMonitor --> TaskManager
+GameMonitor --> SettingsStore
+GameMonitor --> NetworkMonitor
 @enduml

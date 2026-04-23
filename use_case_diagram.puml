@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+title Child Play Time Monitor - Use Case Diagram
+
+actor Parent
+actor Child
+
+rectangle "Child Play Time Monitor" {
+  usecase "Manage game list" as UC1
+  usecase "Manage task list" as UC2
+  usecase "Configure daily and network limits" as UC3
+  usecase "View current status" as UC4
+  usecase "View daily statistics" as UC5
+  usecase "Detect game start and end" as UC6
+  usecase "Log session duration" as UC7
+  usecase "Apply rules and warnings" as UC8
+}
+
+Parent --> UC1
+Parent --> UC2
+Parent --> UC3
+Parent --> UC4
+Parent --> UC5
+Child --> UC6
+Child --> UC7
+Child --> UC8
+
+UC6 --> UC7
+UC7 --> UC8
+UC2 --> UC8
+UC3 --> UC8
+@enduml

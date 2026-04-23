@@ -1,0 +1,14 @@
+{
+  "game_process_names": [
+    "Among Us.exe",
+    "FortniteClient-Win64-Shipping.exe",
+    "GenshinImpact.exe",
+    "RobloxPlayerBeta.exe",
+    "YiqiyooBox.exe",
+    "csgo.exe",
+    "hl2.exe"
+  ],
+  "daily_limit_minutes": 120,
+  "network_limit_mb": 500.0,
+  "auto_shutdown_enabled": false
+}
